@@ -1,0 +1,27 @@
+SMOKE100 : Have you smoked at least 100 cigarettes in your entire life? 
+    Value          Label 
+      1            Yes
+      2            No
+      7/9          Don't know/Not sure/Refused
+SMOKDAY2 : Do you now smoke cigarettes every day, some days, or not at all?
+    Value          Label 
+      1            Every day
+      2            Some days 
+      3            Not at all
+      7/9          Don't know or Not sure/Refused
+ALCDAY5 : During the past 30 days, how many days per week or per month did you have at least one drink of any alcoholic beverage such as beer, wine, a malt beverage or liquor?
+    Value          Label 
+   101-199         Days per week 
+   201-299         Days per month
+     888           No drinks in past 30 days            
+     777           Don't know/Not sure/Refused
+     999           Refused
+DRNK3GE5 : Considering all types of alcoholic beverages, how many times during the past 30 days did you have 5 or more drinks for men or 4 or more drinks for women on an occasion?
+    Value          Label 
+    1 - 76         Number of Times
+     88            None
+     77            Don't know/Not sure/Refused
+     99            Refused
+
+
+
