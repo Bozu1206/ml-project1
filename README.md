@@ -1,11 +1,9 @@
 # ML Project 1
+### Todo
 
-## Todo
-
-- [] Data cleaning 
-- [] Code functions
-- [] AiCrowd + improve submissions
-- [] Write the report 
-- [] Submit code & report
- 
-
+- [ ] Data cleaning
+- [ ] Code functions
+- [ ] AiCrowd + improve submissions
+- [ ] Write the report
+- [ ] Submit code & report
+  
