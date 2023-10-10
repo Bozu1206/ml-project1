@@ -1,9 +1,10 @@
 import numpy as np
 from costs import compute_loss
 
+
 def mse_gradient(y, tx, w):
     error = y - tx.dot(w)
-    return (- 1 / len(error)) * tx.T.dot(w)
+    return -tx.T.dot(error) / len(error)
 
 
 def mae_gradient(y, tx, w):
@@ -23,5 +24,3 @@ def compute_gradient(y, tx, w):
         An array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
     return mse_gradient(y, tx, w)
-
-

@@ -18,6 +18,7 @@ def compute_mae(y, tx, w):
     error = y - tx.dot(w)
     return mae(error)
 
+
 def compute_loss(y, tx, w):
     """Calculate the loss using either MSE or MAE.
 

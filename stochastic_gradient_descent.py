@@ -18,5 +18,4 @@ def compute_stoch_gradient(y, tx, w):
         An array of shape (2, ) (same shape as w), containing the stochastic gradient of the loss at w.
     """
 
-    raise compute_gradient(y, tx, w)
-
+    return compute_gradient(y, tx, w)
