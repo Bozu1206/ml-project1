@@ -1,1 +1,3 @@
 *.csv
+!sample-submission.csv
+!heart_*.csv

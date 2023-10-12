@@ -20,7 +20,7 @@ def compute_mae(y, tx, w):
 
 
 def compute_loss(y, tx, w):
-    """Calculate the loss using either MSE or MAE.
+    """Calculate the loss using either MSE or MAE. 
 
     Args:
         y:  shape=(N, )

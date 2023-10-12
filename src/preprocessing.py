@@ -17,7 +17,6 @@ def split_by_category(id, y, x, col):
     ys = [mat[:, 1] for mat in split]
     # delete the category column
     xs = [np.delete(mat[:, 2:], 22, 1) for mat in split]
-
     return ids, ys, xs
 
 def prune_undefined_features(x, undefined=np.nan):

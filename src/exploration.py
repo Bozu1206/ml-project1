@@ -18,7 +18,6 @@ def display_parallel_coordinates(y, x, features, colors, labels):
     """
 
     fig, axes = plt.subplots(1, features.shape[0] - 1, sharey=False, figsize=(30, 8))
-
     x_norm = np.zeros_like(x)
 
     min_max_range = {}
