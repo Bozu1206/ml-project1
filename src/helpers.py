@@ -3,24 +3,18 @@ import csv
 import numpy as np
 
 
-def load_csv_data(data_path, sub_sample=False):
-    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
-    y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
-    x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
-    ids = x[:, 0].astype(int)
-    input_data = x[:, 2:]
-
-    # convert class labels from strings to binary (-1,1)
-    yb = np.ones(len(y))
-    yb[np.where(y == "b")] = -1
-
-    # sub-sample
-    if sub_sample:
-        yb = yb[::50]
-        input_data = input_data[::50]
-        ids = ids[::50]
-
-    return yb, input_data, ids
+def load_csv_data(x_path, y_path, sub_sample=False):
+    """Loads data and returns y (class labels), x (features)"""
+    x = np.genfromtxt(x_path, skip_header=1, delimiter=',')
+    y = np.genfromtxt(y_path, skip_header=1, dtype=int)
+    
+    # todo: add sub_sample procedure
+    # todo: check for ids ? 
+    
+    # Sanity check
+    assert y.shape == (328135, )
+    assert x.shape[0] == y.shape[0] and x.shape[1] == 321
+    return x, y
 
 
 def create_csv_submission(ids, y_pred, name):
