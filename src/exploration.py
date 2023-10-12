@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
+
 def display_parallel_coordinates(y, x, features, colors, labels):
     """
     Displays the parallel coordinates of the input data, useful for data with more than 4 dimensions.
@@ -28,15 +29,15 @@ def display_parallel_coordinates(y, x, features, colors, labels):
     for i in range(len(axes)):
         for j in range(x.shape[0]):
             axes[i].plot(features, x_norm[j], colors[y[j]], alpha=0.7)
-        axes[i].set_xlim([features[i], features[i+1]])
+        axes[i].set_xlim([features[i], features[i + 1]])
 
     def set_ticks_for_axis(dim, ax, ticks):
         min_val, max_val, val_range = min_max_range[features[dim]]
-        step = val_range / float(ticks-1)
+        step = val_range / float(ticks - 1)
         tick_labels = [round(min_val + step * i, 2) for i in range(ticks)]
         norm_min = x_norm[:, dim].min()
         norm_range = np.ptp(x_norm[:, dim])
-        norm_step = norm_range / float(ticks-1)
+        norm_step = norm_range / float(ticks - 1)
         ticks = [round(norm_min + norm_step * i, 2) for i in range(ticks)]
         ax.yaxis.set_ticks(ticks)
         ax.set_yticklabels(tick_labels)

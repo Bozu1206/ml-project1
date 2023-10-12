@@ -5,14 +5,14 @@ import numpy as np
 
 def load_csv_data(x_path, y_path, sub_sample=False):
     """Loads data and returns y (class labels), x (features)"""
-    x = np.genfromtxt(x_path, skip_header=1, delimiter=',')
+    x = np.genfromtxt(x_path, skip_header=1, delimiter=",")
     y = np.genfromtxt(y_path, skip_header=1, dtype=int)
-    
+
     # todo: add sub_sample procedure
-    # todo: check for ids ? 
-    
+    # todo: check for ids ?
+
     # Sanity check
-    assert y.shape == (328135, )
+    assert y.shape == (328135,)
     assert x.shape[0] == y.shape[0] and x.shape[1] == 321
     return x, y
 
@@ -67,6 +67,7 @@ def standardize(x):
     return x, mean_x, std_x
 
 
+# Todo : Refactor
 def build_model_data(height, weight):
     """Form (y,tX) to get regression data in matrix form."""
     y = weight
