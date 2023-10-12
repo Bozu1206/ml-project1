@@ -1,3 +1,4 @@
 *.csv
 !sample-submission.csv
 !heart_*.csv
+.DS_Store
