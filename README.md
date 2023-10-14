@@ -3,7 +3,7 @@
 
 - [x] Write `load_csv_data` function
 - [ ] Data cleaning
-    -  [ ] Select features
+    -  [X] Select features
     -  [ ] Clean each sample / feature with numpy
 - [ ] Code functions
     -  [x] Polynomial feature expansion
