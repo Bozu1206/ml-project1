@@ -4,7 +4,11 @@
 - [x] Write `load_csv_data` function
 - [ ] Data cleaning
     -  [X] Select features
-    -  [ ] Clean each sample / feature with numpy
+    -  [ ] Clean samples
+        -  [X] Missing features estimators
+        -  [ ] Outliers estimators
+        -  [ ] Merge / drop correlated feature
+        -  [ ] Split into groups based on categorical data
 - [ ] Code functions
     -  [x] Polynomial feature expansion
     -  [ ] Code Cross-Validations 
