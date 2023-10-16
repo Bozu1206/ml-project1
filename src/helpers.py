@@ -75,3 +75,17 @@ def build_model_data(height, weight):
     num_samples = len(y)
     tx = np.c_[np.ones(num_samples), x]
     return y, tx
+
+def split_data_rand(y, tx, ratio, seed=1):
+    """Randomly split the dataset, based on the split ratio and the given seed."""
+    np.random.seed(seed)
+
+    # generate random indices
+    num_row = len(y)
+    indices = np.random.permutation(num_row)
+    index_split = int(np.floor(ratio * num_row))
+    index_tr = indices[: index_split]
+    index_te = indices[index_split:]
+
+    # create and return splits
+    return y[index_tr], tx[index_tr], y[index_te], tx[index_te]
