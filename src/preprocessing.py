@@ -21,20 +21,29 @@ def split_by_category(id, y, x, col):
     return ids, ys, xs
 
 
-def prune_undefined_features(x, undefined=np.nan):
+def prune_undefined(x, axis=1, undefined=np.nan):
     """
-    Delete all undefined features of variance zero.
+    Delete all undefined samples if axis = 0, features if axis = 1
     """
 
-    idx = np.argwhere(np.all(x[..., :] == undefined, axis=0))
-    return np.delete(x, idx, axis=1)
+    idx = np.argwhere(np.all(x[..., :] == undefined, axis=axis))
+    return np.delete(x, idx, axis=axis)
 
 
-def impute_undefined_values(x, undefined=np.nan):
+def undefined_to_mean(x, undefined=np.nan):
     """
     Replaces undefined values by the feature average.
     """
-    col_mean = np.mean(x, where=(x != undefined), axis=0)
-    mask = np.where(x == undefined)
-    x[mask] = np.take(col_mean, mask[1])
+    mean = np.nanmean(x, axis=0)
+    ids = np.where(np.isnan(x))
+    x[ids] = np.take(mean, ids[1])
+    return x
+
+def undefined_to_median(x, undefined=np.nan):
+    """
+    Replaces undefined values by the feature median.
+    """
+    median = np.nanmedian(x, axis=0)
+    ids = np.where(np.isnan(x))
+    x[ids] = np.take(median, ids[1])
     return x
