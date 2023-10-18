@@ -47,3 +47,41 @@ def undefined_to_median(x, undefined=np.nan):
     ids = np.where(np.isnan(x))
     x[ids] = np.take(median, ids[1])
     return x
+
+def change_x_by_nan(feature, to_eleminate, to_replace=None):
+    for v in to_eleminate: 
+        feature[feature == v] = np.nan
+    if to_replace is not None:
+        for key, value in to_replace.items():
+            feature[feature == key] = value
+    return feature
+
+def clean_features(x_train, x_test):
+    for x in [x_train, x_test]:
+        change_x_by_nan(x[:, 0], [7, 9, 88]) # GENHEALT
+        change_x_by_nan(x[:, 1], [77, 99], {88: 0}) # PHYSHEAT
+        change_x_by_nan(x[:, 2], [77, 99], {88: 0}) # MENTALHEALTH
+        change_x_by_nan(x[:, 3],  [7, 9], {2: 0}) # HLTHPLN1
+        change_x_by_nan(x[:, 4],  [7, 9], {2: 0}) # MEDCOST1
+        change_x_by_nan(x[:, 5],  [7, 9], {8: 5}) # CHECKUP1
+        change_x_by_nan(x[:, 6],  [7, 9], {2: 0}) # CVDSTRK3
+        change_x_by_nan(x[:, 7],  [7, 9], {2: 0}) # CHCSCNCR
+        change_x_by_nan(x[:, 8],  [7, 9], {2: 0}) # CHCOCNCR
+        change_x_by_nan(x[:, 9],  [7, 9], {2: 0}) # CHCCOPD1
+        change_x_by_nan(x[:, 10], [7, 9], {2: 0}) # ADDEPEV2
+        change_x_by_nan(x[:, 23], [9], {2:0}) # _FRTLT1 
+        change_x_by_nan(x[:, 24], [9], {2:0}) # _VEGLT1 
+        change_x_by_nan(x[:, 25], [9], {2:0}) # _TOTINDA 
+        change_x_by_nan(x[:, 11],  [7, 9], {2:0, 3:0, 1:2, 4:1}) # DIABETE3 ASK ELISA
+        #change_x_by_nan(x[:, 12], [7, 9], {2: 0}) # SEX ASK ELISA (Nothing to change)
+        change_x_by_nan(x[:, 13], [7, 9]) # MAXDRNKS
+        change_x_by_nan(x[:, 14], [9], {1:0, 2:1}) # _RFHYPE5
+        change_x_by_nan(x[:, 15], [9], {1:0, 2:1}) # _RFCHOL
+        change_x_by_nan(x[:, 16], [9], {3:0, 2:1, 1:2}) # _ASTHMS1 
+        change_x_by_nan(x[:, 17], [], {2:0}) # _DRDXAR1 
+        change_x_by_nan(x[:, 19], [14]) # _AGEG5YR 
+        change_x_by_nan(x[:, 20], []) # _BMI5 
+        change_x_by_nan(x[:, 18], [9]) # _RACE 
+        change_x_by_nan(x[:, 21], [9]) # _SMOKER3 
+        change_x_by_nan(x[:, 22], [99900]) # _DRNKWEK 
+        change_x_by_nan(x[:, 26], [99900]) # FC60_ 
