@@ -103,7 +103,7 @@ def standardize(x):
     x = x - mean_x
     std_x = np.std(x)
     x = x / std_x
-    return x, mean_x, std_x
+    return x
 
 
 # Todo : Refactor
