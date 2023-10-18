@@ -103,7 +103,7 @@ def standardize(x):
     x = x - mean_x
     std_x = np.std(x)
     x = x / std_x
-    return x, mean_x, std_x
+    return x
 
 
 # Todo : Refactor
@@ -128,3 +128,17 @@ def split_data_rand(y, tx, ratio, seed=1):
 
     # create and return splits
     return y[index_tr], tx[index_tr], y[index_te], tx[index_te]
+
+def predict_labels(weights, data):
+    """Generate class predictions given weights, and a test data matrix."""
+    y_pred = data.dot(weights)
+    print("min:", y_pred.min, "max:", y_pred.max)
+    cutoff, lower, upper = (3, -1, 1)
+    y_pred[np.where(y_pred <= cutoff)] = lower
+    y_pred[np.where(y_pred > cutoff)] = upper
+
+    return y_pred
+
+def compute_accuracy(y_true, y_pred): 
+    matches = np.sum(y_true == y_pred)
+    return matches / y_true.shape[0]
