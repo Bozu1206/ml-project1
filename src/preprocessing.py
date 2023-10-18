@@ -57,8 +57,8 @@ def change_x_by_nan(feature, to_eleminate, to_replace=None):
     return feature
 
 def clean_features(x_train, x_test):
-    indices = [26,27,28,30,32,33,39,42,43,44,46,48,50,80,232,234,237,238,242,246,253,259,264,278,279,284,288]
-
+    #indices = [26,27,28,30,32,33,39,42,43,44,46,48,50,80,232,234,237,238,242,246,253,259,264,278,279,284,288]
+    indices = [27,28,29,31,33,34,40,43,44,45,47,49,51,81,233,235,238,239,243,247,254,260,265,279,280,285,289]
     for x in [x_train, x_test]:
         x = x[:, indices]
         change_x_by_nan(x[:, 0], [7, 9, 88]) # GENHEALT
