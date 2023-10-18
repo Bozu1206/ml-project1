@@ -56,35 +56,35 @@ def change_x_by_nan(feature, to_eleminate, to_replace=None):
             feature[feature == key] = value
     return feature
 
-def clean_features(x_train, x_test):
-    #indices = [26,27,28,30,32,33,39,42,43,44,46,48,50,80,232,234,237,238,242,246,253,259,264,278,279,284,288]
-    indices = [27,28,29,31,33,34,40,43,44,45,47,49,51,81,233,235,238,239,243,247,254,260,265,279,280,285,289]
-    for x in [x_train, x_test]:
-        x = x[:, indices]
-        change_x_by_nan(x[:, 0], [7, 9, 88]) # GENHEALT
-        change_x_by_nan(x[:, 1], [77, 99], {88: 0}) # PHYSHEAT
-        change_x_by_nan(x[:, 2], [77, 99], {88: 0}) # MENTALHEALTH
-        change_x_by_nan(x[:, 3],  [7, 9], {2: 0}) # HLTHPLN1
-        change_x_by_nan(x[:, 4],  [7, 9], {2: 0}) # MEDCOST1
-        change_x_by_nan(x[:, 5],  [7, 9], {8: 5}) # CHECKUP1
-        change_x_by_nan(x[:, 6],  [7, 9], {2: 0}) # CVDSTRK3
-        change_x_by_nan(x[:, 7],  [7, 9], {2: 0}) # CHCSCNCR
-        change_x_by_nan(x[:, 8],  [7, 9], {2: 0}) # CHCOCNCR
-        change_x_by_nan(x[:, 9],  [7, 9], {2: 0}) # CHCCOPD1
-        change_x_by_nan(x[:, 10], [7, 9], {2: 0}) # ADDEPEV2
-        change_x_by_nan(x[:, 23], [9], {2:0}) # _FRTLT1 
-        change_x_by_nan(x[:, 24], [9], {2:0}) # _VEGLT1 
-        change_x_by_nan(x[:, 25], [9], {2:0}) # _TOTINDA 
-        change_x_by_nan(x[:, 11],  [7, 9], {2:0, 3:0, 1:2, 4:1}) # DIABETE3 ASK ELISA
-        #change_x_by_nan(x[:, 12], [7, 9], {2: 0}) # SEX ASK ELISA (Nothing to change)
-        change_x_by_nan(x[:, 13], [7, 9]) # MAXDRNKS
-        change_x_by_nan(x[:, 14], [9], {1:0, 2:1}) # _RFHYPE5
-        change_x_by_nan(x[:, 15], [9], {1:0, 2:1}) # _RFCHOL
-        change_x_by_nan(x[:, 16], [9], {3:0, 2:1, 1:2}) # _ASTHMS1 
-        change_x_by_nan(x[:, 17], [], {2:0}) # _DRDXAR1 
-        change_x_by_nan(x[:, 19], [14]) # _AGEG5YR 
-        change_x_by_nan(x[:, 20], []) # _BMI5 
-        change_x_by_nan(x[:, 18], [9]) # _RACE 
-        change_x_by_nan(x[:, 21], [9]) # _SMOKER3 
-        change_x_by_nan(x[:, 22], [99900]) # _DRNKWEK 
-        change_x_by_nan(x[:, 26], [99900]) # FC60_ 
+def clean_features(tx):
+    indices = [26,27,28,30,32,33,39,42,43,44,46,48,50,80,232,234,237,238,242,246,253,259,264,278,279,284,288]
+    #indices = [27,28,29,31,33,34,40,43,44,45,47,49,51,81,233,235,238,239,243,247,254,260,265,279,280,285,289]
+    x = tx[:, indices]
+    change_x_by_nan(x[:, 0], [7, 9, 88]) # GENHEALT
+    change_x_by_nan(x[:, 1], [77, 99], {88: 0}) # PHYSHEAT
+    change_x_by_nan(x[:, 2], [77, 99], {88: 0}) # MENTALHEALTH
+    change_x_by_nan(x[:, 3],  [7, 9], {2: 0}) # HLTHPLN1
+    change_x_by_nan(x[:, 4],  [7, 9], {2: 0}) # MEDCOST1
+    change_x_by_nan(x[:, 5],  [7, 9], {8: 5}) # CHECKUP1
+    change_x_by_nan(x[:, 6],  [7, 9], {2: 0}) # CVDSTRK3
+    change_x_by_nan(x[:, 7],  [7, 9], {2: 0}) # CHCSCNCR
+    change_x_by_nan(x[:, 8],  [7, 9], {2: 0}) # CHCOCNCR
+    change_x_by_nan(x[:, 9],  [7, 9], {2: 0}) # CHCCOPD1
+    change_x_by_nan(x[:, 10], [7, 9], {2: 0}) # ADDEPEV2
+    change_x_by_nan(x[:, 23], [9], {2:0}) # _FRTLT1 
+    change_x_by_nan(x[:, 24], [9], {2:0}) # _VEGLT1 
+    change_x_by_nan(x[:, 25], [9], {2:0}) # _TOTINDA 
+    change_x_by_nan(x[:, 11],  [7, 9], {2:0, 3:0, 1:2, 4:1}) # DIABETE3 ASK ELISA
+    #change_x_by_nan(x[:, 12], [7, 9], {2: 0}) # SEX ASK ELISA (Nothing to change)
+    change_x_by_nan(x[:, 13], [7, 9]) # MAXDRNKS
+    change_x_by_nan(x[:, 14], [9], {1:0, 2:1}) # _RFHYPE5
+    change_x_by_nan(x[:, 15], [9], {1:0, 2:1}) # _RFCHOL
+    change_x_by_nan(x[:, 16], [9], {3:0, 2:1, 1:2}) # _ASTHMS1 
+    change_x_by_nan(x[:, 17], [], {2:0}) # _DRDXAR1 
+    change_x_by_nan(x[:, 19], [14]) # _AGEG5YR 
+    change_x_by_nan(x[:, 20], []) # _BMI5 
+    change_x_by_nan(x[:, 18], [9]) # _RACE 
+    change_x_by_nan(x[:, 21], [9]) # _SMOKER3 
+    change_x_by_nan(x[:, 22], [99900]) # _DRNKWEK 
+    change_x_by_nan(x[:, 26], [99900]) # FC60_ 
+    return x
