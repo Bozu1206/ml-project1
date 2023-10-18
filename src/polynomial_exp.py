@@ -30,3 +30,18 @@ def add_poly_expansion_on_data_matrix(poly_exp, tX):
 
 def compute_and_add_poly_expansion(feature, tX, degree=3):
     return add_poly_expansion_on_data_matrix(build_poly(feature, degree), tX)
+
+def build_poly(tx, degree, do_add_bias=True, odd_only=False):
+    """Polynomial basis functions for input data x, for j=0 up to j=degree."""
+    _, D = tx.shape
+    new_tx = np.zeros((tx.shape[0], degree * D))
+
+    step = 2 if odd_only else 1
+
+    j = 0
+    for feat in range(0, D):
+        for i in range(1, degree + 1, step):
+            new_tx[:, j] = np.power(tx[:, feat], i)
+            j = j + 1
+
+    return np.concatenate((np.ones((tx.shape[0], 1)), new_tx), axis=1) if do_add_bias else new_tx
