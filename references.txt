@@ -1,2 +1,5 @@
 https://www.cdc.gov/brfss/annual_data/2015/pdf/overview_2015.pdf
 https://www.kaggle.com/code/alexteboul/heart-disease-health-indicators-dataset-notebook/notebook
+
+https://medium.com/@alexteboul17/building-predictive-models-for-heart-disease-using-the-2015-behavioral-risk-factor-surveillance-b786368021ab
+https://www.analyticsvidhya.com/blog/2020/10/overcoming-class-imbalance-using-smote-techniques/#h-smote-synthetic-minority-oversampling-technique

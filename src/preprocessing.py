@@ -68,8 +68,16 @@ def undefined_to_avg(arr):
     arr[np.isnan(arr)] = moyenne
     return arr
 
+def standardize(x):
+    """Standardize the original data set."""
+    mean_x = np.mean(x)
+    x = x - mean_x
+    std_x = np.std(x)
+    x = x / std_x
+    return x
+
+
 def _clean_data_core(feature, to_eleminate, to_replace=None):
-    print(to_eleminate, to_replace)
     for v in to_eleminate: 
         feature[feature == v] = np.nan
     if to_replace is not None:
@@ -97,12 +105,21 @@ def clean_data(features: dict, data_x):
         indices.append(index)
         data_x[:, index] = _clean_data_core(data_x[:, index], values_to_nan, values_to_change)
         
-        if categorie == "CON": 
+        if categorie.find("CON") != -1: 
             # Continous feature
             data_x[:, index] = undefined_to_avg(data_x[:, index])
-        elif categorie == "CAT":
+             # Standardize 
+            data_x[:, index] = standardize(data_x[:, index])
+            
+            if categorie.find("Poly") != -1: 
+                # Do polynomial expansion here, if needed
+                pass
+            
+        if categorie.find("CAT"):
             # Categorical feature: replace by the most frequent values
             data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
+        
+        
         
     return data_x[:, indices]
         
