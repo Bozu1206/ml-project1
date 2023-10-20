@@ -1,5 +1,5 @@
 import numpy as np
-
+import csv
 
 def split_by_category(id, y, x, col):
     """
@@ -36,6 +36,8 @@ def undefined_to_mean(x, undefined=np.nan):
     """
     mean = np.nanmean(x, axis=0)
     ids = np.where(np.isnan(x))
+    print(ids)
+    assert 0
     x[ids] = np.take(mean, ids[1])
     return x
 
@@ -48,7 +50,26 @@ def undefined_to_median(x, undefined=np.nan):
     x[ids] = np.take(median, ids[1])
     return x
 
-def change_x_by_nan(feature, to_eleminate, to_replace=None):
+def undefined_to_most_frequent(feature): 
+    # Exclure les nan et trouver les valeurs uniques et leurs compte
+    valeurs_uniques, comptes = np.unique(feature[~np.isnan(feature)], return_counts=True)
+    
+    # Trouver la valeur avec la plus grande fréquence
+    most_frequent_value = valeurs_uniques[np.argmax(comptes)]
+    
+    # Remplacer les nan par la valeur la plus fréquente
+    feature[np.isnan(feature)] = most_frequent_value
+    return feature
+
+def undefined_to_avg(arr):
+    # Calculer la moyenne en ignorant les nan
+    moyenne = np.nanmean(arr)
+    # Remplacer les nan par la moyenne
+    arr[np.isnan(arr)] = moyenne
+    return arr
+
+def _clean_data_core(feature, to_eleminate, to_replace=None):
+    print(to_eleminate, to_replace)
     for v in to_eleminate: 
         feature[feature == v] = np.nan
     if to_replace is not None:
@@ -56,35 +77,32 @@ def change_x_by_nan(feature, to_eleminate, to_replace=None):
             feature[feature == key] = value
     return feature
 
-def clean_features(tx):
-    indices = [26,27,28,30,32,33,39,42,43,44,46,48,50,80,232,234,237,238,242,246,253,259,264,278,279,284,288]
-    #indices = [27,28,29,31,33,34,40,43,44,45,47,49,51,81,233,235,238,239,243,247,254,260,265,279,280,285,289]
-    x = tx[:, indices]
-    change_x_by_nan(x[:, 0], [7, 9, 88]) # GENHEALT
-    change_x_by_nan(x[:, 1], [77, 99], {88: 0}) # PHYSHEAT
-    change_x_by_nan(x[:, 2], [77, 99], {88: 0}) # MENTALHEALTH
-    change_x_by_nan(x[:, 3],  [7, 9], {2: 0}) # HLTHPLN1
-    change_x_by_nan(x[:, 4],  [7, 9], {2: 0}) # MEDCOST1
-    change_x_by_nan(x[:, 5],  [7, 9], {8: 5}) # CHECKUP1
-    change_x_by_nan(x[:, 6],  [7, 9], {2: 0}) # CVDSTRK3
-    change_x_by_nan(x[:, 7],  [7, 9], {2: 0}) # CHCSCNCR
-    change_x_by_nan(x[:, 8],  [7, 9], {2: 0}) # CHCOCNCR
-    change_x_by_nan(x[:, 9],  [7, 9], {2: 0}) # CHCCOPD1
-    change_x_by_nan(x[:, 10], [7, 9], {2: 0}) # ADDEPEV2
-    change_x_by_nan(x[:, 23], [9], {2:0}) # _FRTLT1 
-    change_x_by_nan(x[:, 24], [9], {2:0}) # _VEGLT1 
-    change_x_by_nan(x[:, 25], [9], {2:0}) # _TOTINDA 
-    change_x_by_nan(x[:, 11],  [7, 9], {2:0, 3:0, 1:2, 4:1}) # DIABETE3 ASK ELISA
-    #change_x_by_nan(x[:, 12], [7, 9], {2: 0}) # SEX ASK ELISA (Nothing to change)
-    change_x_by_nan(x[:, 13], [7, 9]) # MAXDRNKS
-    change_x_by_nan(x[:, 14], [9], {1:0, 2:1}) # _RFHYPE5
-    change_x_by_nan(x[:, 15], [9], {1:0, 2:1}) # _RFCHOL
-    change_x_by_nan(x[:, 16], [9], {3:0, 2:1, 1:2}) # _ASTHMS1 
-    change_x_by_nan(x[:, 17], [], {2:0}) # _DRDXAR1 
-    change_x_by_nan(x[:, 19], [14]) # _AGEG5YR 
-    change_x_by_nan(x[:, 20], []) # _BMI5 
-    change_x_by_nan(x[:, 18], [9]) # _RACE 
-    change_x_by_nan(x[:, 21], [9]) # _SMOKER3 
-    change_x_by_nan(x[:, 22], [99900]) # _DRNKWEK 
-    change_x_by_nan(x[:, 26], [99900]) # FC60_ 
-    return x
+def clean_data(features: dict, data_x): 
+    headers = []
+    with open("../data/raw/x_train.csv", 'r') as infile:
+        reader = csv.DictReader(infile)
+        headers = reader.fieldnames
+    
+    assert len(headers) == 322
+    
+    # Parse dict 
+    indices = []
+    for col_name, cleaning in features.items():
+        #TODO: Use categorie to decide how to replace NaNs
+        to_clean, categorie = cleaning
+        values_to_nan = to_clean[0]
+        values_to_change = to_clean[1]
+        
+        index = headers.index(col_name)
+        indices.append(index)
+        data_x[:, index] = _clean_data_core(data_x[:, index], values_to_nan, values_to_change)
+        
+        if categorie == "CON": 
+            # Continous feature
+            data_x[:, index] = undefined_to_avg(data_x[:, index])
+        elif categorie == "CAT":
+            # Categorical feature: replace by the most frequent values
+            data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
+        
+    return data_x[:, indices]
+        

@@ -1,0 +1,14 @@
+{
+    "GENHLTH" : 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "PHYSHLTH":
+    {
+        "Cleaning": ["77,99", "88:0"],
+        "Type": "CON"
+    }
+}
+
