@@ -104,6 +104,7 @@ def build_model_data(y, x):
     tx = np.c_[np.ones(num_samples), x]
     return y, tx
 
+
 def split_data_rand(y, tx, ratio, seed=1):
     """Randomly split the dataset, based on the split ratio and the given seed."""
     np.random.seed(seed)
@@ -112,11 +113,12 @@ def split_data_rand(y, tx, ratio, seed=1):
     num_row = len(y)
     indices = np.random.permutation(num_row)
     index_split = int(np.floor(ratio * num_row))
-    index_tr = indices[: index_split]
+    index_tr = indices[:index_split]
     index_te = indices[index_split:]
 
     # create and return splits
     return y[index_tr], tx[index_tr], y[index_te], tx[index_te]
+
 
 def predict_labels(weights, data):
     """Generate class predictions given weights, and a test data matrix."""
@@ -128,6 +130,7 @@ def predict_labels(weights, data):
 
     return y_pred
 
-def compute_accuracy(y_true, y_pred): 
+
+def compute_accuracy(y_true, y_pred):
     matches = np.sum(y_true == y_pred)
     return matches / y_true.shape[0]

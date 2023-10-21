@@ -19,6 +19,17 @@ def compute_mae(y, tx, w):
     return mae(error)
 
 
+def sigmoid(z):
+    # z = np.clip(z, -1e5, 1e5)
+    return 1.0 / (1 + np.exp(-z))
+
+
+def compute_log_loss(y, tx, w):
+    sig = sigmoid(tx.dot(w))
+    loss = -np.mean(y * np.log(sig) + (1 - y) * np.log(1 - sig))
+    return loss
+
+
 def compute_loss(y, tx, w):
     """Calculate the loss using either MSE or MAE.
 

@@ -1,5 +1,7 @@
 import numpy as np
 import csv
+import polynomial_exp as exp
+
 
 def split_by_category(id, y, x, col):
     """
@@ -41,6 +43,7 @@ def undefined_to_mean(x, undefined=np.nan):
     x[ids] = np.take(mean, ids[1])
     return x
 
+
 def undefined_to_median(x, undefined=np.nan):
     """
     Replaces undefined values by the feature median.
@@ -50,16 +53,20 @@ def undefined_to_median(x, undefined=np.nan):
     x[ids] = np.take(median, ids[1])
     return x
 
-def undefined_to_most_frequent(feature): 
+
+def undefined_to_most_frequent(feature):
     # Exclure les nan et trouver les valeurs uniques et leurs compte
-    valeurs_uniques, comptes = np.unique(feature[~np.isnan(feature)], return_counts=True)
-    
+    valeurs_uniques, comptes = np.unique(
+        feature[~np.isnan(feature)], return_counts=True
+    )
+
     # Trouver la valeur avec la plus grande fréquence
     most_frequent_value = valeurs_uniques[np.argmax(comptes)]
-    
+
     # Remplacer les nan par la valeur la plus fréquente
     feature[np.isnan(feature)] = most_frequent_value
     return feature
+
 
 def undefined_to_avg(arr):
     # Calculer la moyenne en ignorant les nan
@@ -67,6 +74,7 @@ def undefined_to_avg(arr):
     # Remplacer les nan par la moyenne
     arr[np.isnan(arr)] = moyenne
     return arr
+
 
 def standardize(x):
     """Standardize the original data set."""
@@ -77,49 +85,62 @@ def standardize(x):
     return x
 
 
-def _clean_data_core(feature, to_eleminate, to_replace=None):
-    for v in to_eleminate: 
-        feature[feature == v] = np.nan
+def _clean_data_core(feature, to_eleminate=None, to_replace=None):
+    if to_eleminate is not None:
+        for v in to_eleminate:
+            feature[feature == v] = np.nan
     if to_replace is not None:
         for key, value in to_replace.items():
             feature[feature == key] = value
     return feature
 
-def clean_data(features: dict, data_x): 
+
+def clean_data(features: dict, data_x, do_poly=False):
     headers = []
-    with open("../data/raw/x_train.csv", 'r') as infile:
+    with open("../data/raw/x_train.csv", "r") as infile:
         reader = csv.DictReader(infile)
         headers = reader.fieldnames
-    
+
     assert len(headers) == 322
-    
-    # Parse dict 
+
+    # Parse dict
     indices = []
     for col_name, cleaning in features.items():
-        #TODO: Use categorie to decide how to replace NaNs
         to_clean, categorie = cleaning
         values_to_nan = to_clean[0]
         values_to_change = to_clean[1]
-        
+
         index = headers.index(col_name)
         indices.append(index)
-        data_x[:, index] = _clean_data_core(data_x[:, index], values_to_nan, values_to_change)
-        
-        if categorie.find("CON") != -1: 
+        data_x[:, index] = _clean_data_core(
+            data_x[:, index], values_to_nan, values_to_change
+        )
+
+        if categorie.find("CON") != -1:
             # Continous feature
             data_x[:, index] = undefined_to_avg(data_x[:, index])
-             # Standardize 
+            # Standardize
             data_x[:, index] = standardize(data_x[:, index])
-            
-            if categorie.find("Poly") != -1: 
+
+            if categorie.find("Poly") != -1:
                 # Do polynomial expansion here, if needed
                 pass
-            
-        if categorie.find("CAT"):
+                # data_x = exp.compute_and_add_poly_expansion(data_x[:, index], data_x, degree=3, f=col_name)
+
+        if categorie.find("CAT") != -1:
             # Categorical feature: replace by the most frequent values
             data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
-        
-        
-        
-    return data_x[:, indices]
-        
+
+    data_x = data_x[:, indices]
+
+    if do_poly:
+        for index, (col_name, cleaning) in enumerate(features.items()):
+            _, categorie = cleaning
+            if categorie.find("Poly") != -1:
+                # Do polynomial expansion here, if needed
+                # pass
+                data_x = exp.compute_and_add_poly_expansion(
+                    data_x[:, index], data_x, degree=3, f=col_name
+                )
+
+    return data_x
