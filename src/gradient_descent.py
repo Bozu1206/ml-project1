@@ -1,5 +1,5 @@
 import numpy as np
-from costs import compute_loss
+from costs import sigmoid
 
 
 def mse_gradient(y, tx, w):
@@ -24,3 +24,9 @@ def compute_gradient(y, tx, w):
         An array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
     return mse_gradient(y, tx, w)
+
+
+def log_gradient(y, tx, w):
+    N = len(y)
+    gradient = (1.0 / N) * tx.T.dot(sigmoid(tx.dot(w)) - y)
+    return gradient

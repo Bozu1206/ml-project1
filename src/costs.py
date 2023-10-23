@@ -14,13 +14,18 @@ def compute_mse(y, tx, w):
     return mse(error)
 
 
+def compute_rmse(y, tx, w):
+    error = y - tx.dot(w)
+    return np.sqrt(2 * mse(error))
+
+
 def compute_mae(y, tx, w):
     error = y - tx.dot(w)
     return mae(error)
 
 
 def sigmoid(z):
-    # z = np.clip(z, -1e5, 1e5)
+    z = np.clip(z, -1e5, 1e5)
     return 1.0 / (1 + np.exp(-z))
 
 

@@ -1,6 +1,31 @@
 import numpy as np
 import csv
 import polynomial_exp as exp
+import random
+
+
+def balance_data(x, y, seed, size):
+    positive_indices = np.where(y == 1)[0]
+    negative_indices = np.where(y != 1)[0]
+
+    min_samples = min(len(positive_indices), len(negative_indices))
+
+    prop_maj_class = int(size * float(min_samples))
+
+    random.seed(seed)
+    downsampled_negative_indices = random.sample(list(negative_indices), prop_maj_class)
+
+    balanced_indices = np.concatenate([positive_indices, downsampled_negative_indices])
+    random.shuffle(balanced_indices)
+
+    balanced_x = x[balanced_indices]
+    balanced_y = y[balanced_indices]
+
+    print(
+        f"Training with : {prop_maj_class / len(balanced_x) * 100:.2f}% of [-1] and with {len(positive_indices) / len(balanced_x) * 100:.2f}% of [1]"
+    )
+
+    return balanced_x, balanced_y
 
 
 def split_by_category(id, y, x, col):
@@ -32,25 +57,12 @@ def prune_undefined(x, axis=1, undefined=np.nan):
     return np.delete(x, idx, axis=axis)
 
 
-def undefined_to_mean(x, undefined=np.nan):
-    """
-    Replaces undefined values by the feature average.
-    """
-    mean = np.nanmean(x, axis=0)
-    ids = np.where(np.isnan(x))
-    print(ids)
-    assert 0
-    x[ids] = np.take(mean, ids[1])
-    return x
-
-
 def undefined_to_median(x, undefined=np.nan):
     """
     Replaces undefined values by the feature median.
     """
-    median = np.nanmedian(x, axis=0)
-    ids = np.where(np.isnan(x))
-    x[ids] = np.take(median, ids[1])
+    median = np.nanmedian(x)
+    x[np.isnan(x)] = median
     return x
 
 
@@ -121,11 +133,6 @@ def clean_data(features: dict, data_x, do_poly=False):
             data_x[:, index] = undefined_to_avg(data_x[:, index])
             # Standardize
             data_x[:, index] = standardize(data_x[:, index])
-
-            if categorie.find("Poly") != -1:
-                # Do polynomial expansion here, if needed
-                pass
-                # data_x = exp.compute_and_add_poly_expansion(data_x[:, index], data_x, degree=3, f=col_name)
 
         if categorie.find("CAT") != -1:
             # Categorical feature: replace by the most frequent values
