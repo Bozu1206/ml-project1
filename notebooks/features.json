@@ -191,7 +191,7 @@
         "Cleaning": ["9", "2:0"],
         "Type": "CAT"
     },
-    
+
     "_TOTINDA":
     {
         "Cleaning": ["9", "2:0"],
@@ -285,6 +285,66 @@
     "CIMEMLOS":
     {
         "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "EMPLOY1":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "_HCVU651":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "_AGE80":
+    {
+        "Cleaning": [],
+        "Type": "CON, Poly"
+    },
+
+    "CHILDREN":
+    {
+        "Cleaning": ["88,99"],
+        "Type": "CON"
+    },
+
+    "TOLDHI2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "QLACTLM2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "PNEUVAC3":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "VETERAN3":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "_LMTSCL1":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "CHOLCHK":
+    {
+        "Cleaning": ["9"],
         "Type": "CAT"
     }
 }
