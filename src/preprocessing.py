@@ -1,6 +1,6 @@
 import numpy as np
 import csv
-import polynomial_exp as exp
+import src.polynomial_exp as exp
 import random
 
 
@@ -96,6 +96,17 @@ def standardize(x):
     x = x / std_x
     return x
 
+def one_hot_encode(x):
+    """
+    Returns a One-hot encoding of a categorical feature
+    """
+    labels = np.unique(x)
+    one_hot = np.zeros((len(x), len(labels)), dtype=int)
+
+    for i, label in enumerate(labels):
+        one_hot[np.where(x == label), i] = 1
+
+    return one_hot
 
 def _clean_data_core(feature, to_eleminate=None, to_replace=None):
     if to_eleminate is not None:
@@ -107,7 +118,7 @@ def _clean_data_core(feature, to_eleminate=None, to_replace=None):
     return feature
 
 
-def clean_data(features: dict, data_x, do_poly=False):
+def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do_one_hot=False):
     headers = []
     with open("../data/raw/x_train.csv", "r") as infile:
         reader = csv.DictReader(infile)
@@ -130,13 +141,30 @@ def clean_data(features: dict, data_x, do_poly=False):
 
         if categorie.find("CON") != -1:
             # Continous feature
-            data_x[:, index] = undefined_to_avg(data_x[:, index])
+            if median_estimator:
+                data_x[:, index] = undefined_to_median(data_x[:, index])
+            else:
+                data_x[:, index] = undefined_to_avg(data_x[:, index])
             # Standardize
             data_x[:, index] = standardize(data_x[:, index])
 
         if categorie.find("CAT") != -1:
             # Categorical feature: replace by the most frequent values
             data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
+
+    if do_one_hot and not do_poly:
+        new_data = np.empty((data_x.shape[0]))
+
+        for col, cleaning in features.items():
+            _, label = cleaning 
+            index = headers.index(col)
+
+            if index in indices and label.find("CAT") != -1:
+                new_data = np.c_[new_data, one_hot_encode(data_x[:, index])]
+            else:
+                new_data = np.c_[new_data, data_x[:, index]]
+
+        return new_data
 
     data_x = data_x[:, indices]
 
