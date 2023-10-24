@@ -43,19 +43,19 @@
 
     "CHCSCNCR":
     {
-        "Cleaning": ["7,9"],
+        "Cleaning": ["7,9", "2:0"],
         "Type": "CAT"
     },
 
     "CHCOCNCR":
     {
-        "Cleaning": ["7,9"],
+        "Cleaning": ["7,9", "2:0"],
         "Type": "CAT"
     },
 
     "CHCCOPD1":
     {
-        "Cleaning": ["7,9"],
+        "Cleaning": ["7,9", "2:0"],
         "Type": "CAT"
     },
 
@@ -75,7 +75,7 @@
     {
         "Cleaning": ["7,9", "2:0"],
         "Type": "CAT"
-    },
+    }, 
 
     "DIABETE3":
     {
@@ -102,18 +102,18 @@
         "Type": "CON, Poly"
     },
 
-    "USEEQUIP":
+    "USEEQUIP": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    }, 
+
+    "DIFFWALK": 
     {
         "Cleaning": ["7,9", "2:0"],
         "Type": "CAT"
     },
-
-    "DIFFWALK":
-    {
-        "Cleaning": ["7,9", "2:0"],
-        "Type": "CAT"
-    },
-
+    
     "MAXDRNKS":
     {
         "Cleaning": ["77,99"],
@@ -158,7 +158,7 @@
 
     "_BMI5":
     {
-        "Cleaning": [],
+        "Cleaning": [""],
         "Type": "CON, Poly"
     },
 
@@ -191,7 +191,7 @@
         "Cleaning": ["9", "2:0"],
         "Type": "CAT"
     },
-
+    
     "_TOTINDA":
     {
         "Cleaning": ["9", "2:0"],
@@ -214,12 +214,78 @@
     {
         "Cleaning": ["99900"],
         "Type": "CON, Poly"
-    },
+    }, 
 
     "STRFREQ_":
     {
-        "Cleaning": ["99000"],
-        "Type": "CON, Poly"
+        "Cleaning": ["99900"],
+        "Type": "CON"
+    },
+
+    "DRNKANY5":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    }, 
+
+    "_RFDRHV5": 
+    {
+        "Cleaning": ["9", "1:0"],
+        "Type": "CAT"
+    },
+
+    "ACTIN11_": 
+    {
+        "Cleaning": [],
+        "Type": "CAT"
+    },
+
+    "_RFSMOK3": 
+    {
+        "Cleaning": ["9", "1:0"],
+        "Type": "CAT"
+    }, 
+
+    "SMOKE100": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "SMOKDAY2":
+    {
+        "Cleaning": ["7,9", "3:0"],
+        "Type": "CAT"
+    },
+
+    "STOPSMK2": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "USENOW3":
+    {
+        "Cleaning": ["7,9"],
+        "Type": "CAT"
+    },
+
+    "EXERANY2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "PREDIAB1":
+    {
+        "Cleaning": ["7,9", "2:1, 3:0"],
+        "Type": "CAT"
+    },
+
+    "CIMEMLOS":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
     }
 }
 
