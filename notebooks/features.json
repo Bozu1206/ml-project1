@@ -85,13 +85,13 @@
 
     "SEX":
     {
-        "Cleaning": ["", "2:0"],
+        "Cleaning": ["2:0"],
         "Type": "CAT"
     },
 
     "EDUCA":
     {
-        "Cleaning": ["", "9:1"],
+        "Cleaning": ["9:1"],
         "Type": "CAT"
     },
 
@@ -140,7 +140,7 @@
 
     "_DRDXAR1":
     {
-        "Cleaning": ["", "2:0"],
+        "Cleaning": ["2:0"],
         "Type": "CAT"
     },
 
@@ -158,7 +158,7 @@
 
     "_BMI5":
     {
-        "Cleaning": [""],
+        "Cleaning": [],
         "Type": "CON, Poly"
     },
 
