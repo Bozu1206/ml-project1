@@ -143,7 +143,7 @@ def clean_data(
     minus_one=False,
 ):
     headers = []
-    with open("../data/raw/x_train.csv", "r") as infile:
+    with open("./data/raw/x_train.csv", "r") as infile:
         reader = csv.DictReader(infile)
         headers = reader.fieldnames
 

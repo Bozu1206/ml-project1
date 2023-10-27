@@ -11,7 +11,7 @@ import argparse
 
 
 def main():
-    DATAPATH = "../data/raw/"
+    DATAPATH = "./data/raw/"
     SPLIT_RATIO = 0.69
     DOWNSAMPLING_FACTOR = 0.1651
     SEED = 499912
