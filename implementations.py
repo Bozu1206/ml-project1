@@ -37,6 +37,7 @@ def least_squares(y, tx):
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
 
+    # Pseudo-inverse if the matrix is ill-conditionned
     if np.linalg.cond(a) > 10e15:
         w = np.linalg.pinv(a).dot(b)
         loss = compute_loss(y, tx, w)
@@ -89,6 +90,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         if np.abs(loss - previous_loss) < thres:
             break
 
-        previous_loss = loss  # update previous loss
+        previous_loss = loss
 
     return w, loss
