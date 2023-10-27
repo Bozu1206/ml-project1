@@ -4,6 +4,7 @@ from costs import *
 from helpers import batch_iter
 import numpy as np
 
+
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     To do : Add docstring
@@ -35,12 +36,12 @@ def least_squares(y, tx):
     """
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
- 
-    if np.linalg.cond(a) > 10e15: 
+
+    if np.linalg.cond(a) > 10e15:
         w = np.linalg.pinv(a).dot(b)
         loss = compute_loss(y, tx, w)
         return w, loss
-        
+
     w = np.linalg.solve(a, b)
     loss = compute_loss(y, tx, w)
     return w, loss
@@ -83,11 +84,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     for i in range(max_iters):
         grad = log_gradient(y, tx, w) + [2.0 * lambda_ * x for x in w]
         w = w - gamma * grad
-        
+
         loss = compute_log_loss(y, tx, w)
         if np.abs(loss - previous_loss) < thres:
             break
-        
-        previous_loss = loss  # update previous loss    
-    
+
+        previous_loss = loss  # update previous loss
+
     return w, loss

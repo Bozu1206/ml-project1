@@ -25,6 +25,7 @@ def compute_gradient(y, tx, w):
     """
     return mse_gradient(y, tx, w)
 
+
 def log_gradient(y, tx, w):
     N = len(y)
     gradient = (1.0 / N) * tx.T.dot(sigmoid(tx.dot(w)) - y)

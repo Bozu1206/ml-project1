@@ -21,7 +21,9 @@ class GradientFitter:
     def __train_and_validate(self):
         # Train a GD Linear regression predictor
         # Kaiming Initialisation
-        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        initial_w = np.random.normal(
+            0.0, 2 / self.x_train.shape[1], self.x_train.shape[1]
+        )
         w, loss = imp.mean_squared_error_gd(
             self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
         )
@@ -56,7 +58,9 @@ class StochasticGradientFitter:
     def __train_and_validate(self):
         # Train a SGD Linear regression predictor
         # Kaiming Initialisation
-        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        initial_w = np.random.normal(
+            0.0, 2 / self.x_train.shape[1], self.x_train.shape[1]
+        )
         w, loss = imp.mean_squared_error_sgd(
             self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
         )
@@ -145,11 +149,12 @@ class LogisticRegressionFitter:
         self.max_iters = max_iters
         self.gamma = gamma
         self.thresh = thresh
-        
 
     def __train_and_validate(self):
         # Kaiming Initialisation
-        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        initial_w = np.random.normal(
+            0.0, 2 / self.x_train.shape[1], self.x_train.shape[1]
+        )
         w, _ = imp.logistic_regression(
             self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
         )
@@ -172,7 +177,9 @@ class LogisticRegressionFitter:
 
 class RegLogisticRegressionFitter:
     ## Here we supposed that data is already cleaned
-    def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, lambda_, thresh):
+    def __init__(
+        self, y_train, x_train, y_test, x_test, max_iters, gamma, lambda_, thresh
+    ):
         self.y_train = y_train
         self.y_test = y_test
         self.x_train = x_train
@@ -181,11 +188,12 @@ class RegLogisticRegressionFitter:
         self.gamma = gamma
         self.lambda_ = lambda_
         self.thresh = thresh
-        
 
     def __train_and_validate(self):
         # Kaiming Initialisation
-        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        initial_w = np.random.normal(
+            0.0, 2 / self.x_train.shape[1], self.x_train.shape[1]
+        )
         w, _ = imp.reg_logistic_regression(
             self.y_train,
             self.x_train,
