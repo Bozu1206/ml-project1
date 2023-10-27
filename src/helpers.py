@@ -2,6 +2,7 @@
 import csv
 import numpy as np
 import os
+import preprocessing
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -69,6 +70,14 @@ def create_csv_submission(ids, y_pred, name):
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({"Id": int(r1), "Prediction": int(r2)})
+            
+def make_submission(model, w, filename, ids, x_test): 
+    import json_parser
+    features = json_parser.parse_json_file("./features.json")
+    x_true = preprocessing.clean_data(features, x_test, do_poly=False, minus_one=True, median_estimator=True, do_one_hot=True)
+    test_preds = model.predict(x_true, w)
+    test_preds[np.where(test_preds == 0)] = -1 #LR
+    create_csv_submission(ids, test_preds, filename)
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):

@@ -2,9 +2,7 @@ from gradient_descent import *
 from stochastic_gradient_descent import *
 from costs import *
 from helpers import batch_iter
-from helpers import remove_dependent_columns
 import numpy as np
-
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """

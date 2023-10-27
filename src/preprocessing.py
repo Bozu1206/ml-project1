@@ -1,31 +1,41 @@
 import numpy as np
 import csv
-import src.polynomial_exp as exp
+import polynomial_exp as exp
 import random
+import helpers
+import json_parser
 
 
-def balance_data(x, y, seed, size):
+def resample(x, y, seed, d_size=0.5, u_size=0, oversample=False, downsample=True, both=False):
+    np.random.seed(seed)
+    
+    negative_indices = np.where(y == -1)[0]
     positive_indices = np.where(y == 1)[0]
-    negative_indices = np.where(y != 1)[0]
-
-    min_samples = min(len(positive_indices), len(negative_indices))
-
-    prop_maj_class = int(size * float(min_samples))
-
-    random.seed(seed)
-    downsampled_negative_indices = random.sample(list(negative_indices), prop_maj_class)
-
-    balanced_indices = np.concatenate([positive_indices, downsampled_negative_indices])
-    random.shuffle(balanced_indices)
-
-    balanced_x = x[balanced_indices]
-    balanced_y = y[balanced_indices]
-
-    print(
-        f"Training with : {prop_maj_class / len(balanced_x) * 100:.2f}% of [-1] and with {len(positive_indices) / len(balanced_x) * 100:.2f}% of [1]"
-    )
-
-    return balanced_x, balanced_y
+    
+    if oversample:
+        num_samples = int(u_size * len(positive_indices))
+        sampled_positive_indices = np.random.choice(positive_indices, num_samples, replace=True)
+        resampled_x = np.concatenate([x[negative_indices], x[sampled_positive_indices]])
+        resampled_y = np.concatenate([y[negative_indices], y[sampled_positive_indices]])
+        
+    elif downsample:
+        num_samples = int(d_size * len(negative_indices))
+        sampled_negative_indices = np.random.choice(negative_indices, num_samples, replace=False)
+        resampled_x = np.concatenate([x[sampled_negative_indices], x[positive_indices]])
+        resampled_y = np.concatenate([y[sampled_negative_indices], y[positive_indices]])
+        
+    elif both:
+        num_negative_samples = int(d_size * len(negative_indices))
+        num_positive_samples = int(u_size * len(positive_indices))
+        sampled_negative_indices = np.random.choice(negative_indices, num_negative_samples, replace=False)
+        sampled_positive_indices = np.random.choice(positive_indices, num_positive_samples, replace=True)
+        resampled_x = np.concatenate([x[sampled_negative_indices], x[sampled_positive_indices]])
+        resampled_y = np.concatenate([y[sampled_negative_indices], y[sampled_positive_indices]])
+        
+    else:
+        raise ValueError()
+        
+    return resampled_x, resampled_y
 
 
 def split_by_category(id, y, x, col):
@@ -48,14 +58,6 @@ def split_by_category(id, y, x, col):
     return ids, ys, xs
 
 
-def prune_undefined(x, axis=1, undefined=np.nan):
-    """
-    Delete all undefined samples if axis = 0, features if axis = 1
-    """
-
-    idx = np.argwhere(np.all(x[..., :] == undefined, axis=axis))
-    return np.delete(x, idx, axis=axis)
-
 
 def undefined_to_median(x, undefined=np.nan):
     """
@@ -67,25 +69,23 @@ def undefined_to_median(x, undefined=np.nan):
 
 
 def undefined_to_most_frequent(feature):
-    # Exclure les nan et trouver les valeurs uniques et leurs compte
     valeurs_uniques, comptes = np.unique(
         feature[~np.isnan(feature)], return_counts=True
     )
 
-    # Trouver la valeur avec la plus grande fréquence
     most_frequent_value = valeurs_uniques[np.argmax(comptes)]
-
-    # Remplacer les nan par la valeur la plus fréquente
     feature[np.isnan(feature)] = most_frequent_value
     return feature
 
+def undefined_to_minus_one(feature):
+    feature[np.isnan(feature)] = -1
+    return feature
 
-def undefined_to_avg(arr):
-    # Calculer la moyenne en ignorant les nan
-    moyenne = np.nanmean(arr)
-    # Remplacer les nan par la moyenne
-    arr[np.isnan(arr)] = moyenne
-    return arr
+
+def undefined_to_avg(x):
+    mean = np.nanmean(x)
+    x[np.isnan(x)] = mean
+    return x
 
 
 def standardize(x):
@@ -105,7 +105,7 @@ def one_hot_encode(x):
 
     for i, label in enumerate(labels):
         one_hot[np.where(x == label), i] = 1
-
+        
     return one_hot
 
 def _clean_data_core(feature, to_eleminate=None, to_replace=None):
@@ -118,14 +118,15 @@ def _clean_data_core(feature, to_eleminate=None, to_replace=None):
     return feature
 
 
-def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do_one_hot=False):
+def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do_one_hot=False, minus_one=False):
     headers = []
     with open("../data/raw/x_train.csv", "r") as infile:
         reader = csv.DictReader(infile)
         headers = reader.fieldnames
 
-    assert len(headers) == 322
-
+    headers = headers[1:] # Remove id col    
+    assert len(headers) == 321
+    
     # Parse dict
     indices = []
     for col_name, cleaning in features.items():
@@ -138,23 +139,28 @@ def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do
         data_x[:, index] = _clean_data_core(
             data_x[:, index], values_to_nan, values_to_change
         )
-
+        
         if categorie.find("CON") != -1:
             # Continous feature
             if median_estimator:
                 data_x[:, index] = undefined_to_median(data_x[:, index])
             else:
                 data_x[:, index] = undefined_to_avg(data_x[:, index])
+                
             # Standardize
             data_x[:, index] = standardize(data_x[:, index])
 
         if categorie.find("CAT") != -1:
-            # Categorical feature: replace by the most frequent values
-            data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
-
+            if minus_one:
+                data_x[:, index] = undefined_to_minus_one(data_x[:, index])
+            else:
+                # Categorical feature: replace by the most frequent values
+                data_x[:, index] = undefined_to_most_frequent(data_x[:, index])
+                
+  
+    # Redo this
     if do_one_hot and not do_poly:
         new_data = np.empty((data_x.shape[0]))
-
         for col, cleaning in features.items():
             _, label = cleaning 
             index = headers.index(col)
@@ -163,9 +169,11 @@ def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do
                 new_data = np.c_[new_data, one_hot_encode(data_x[:, index])]
             else:
                 new_data = np.c_[new_data, data_x[:, index]]
-
+        
         return new_data
-
+    
+   
+    indices = np.sort(indices)
     data_x = data_x[:, indices]
 
     if do_poly:
@@ -173,9 +181,30 @@ def clean_data(features: dict, data_x, median_estimator=False, do_poly=False, do
             _, categorie = cleaning
             if categorie.find("Poly") != -1:
                 # Do polynomial expansion here, if needed
-                # pass
                 data_x = exp.compute_and_add_poly_expansion(
                     data_x[:, index], data_x, degree=3, f=col_name
                 )
 
     return data_x
+
+def prepare_data(x, y, seed, ratio, downsampling_size=0, upsamplingsize=0):
+    if downsampling_size == 0 and upsamplingsize == 0: 
+        y_train, x_train, y_test, x_test = helpers.split_data_rand(y, x, ratio)
+    else:
+        y_train, x_train, y_test, x_test = helpers.split_data_rand(y, x, ratio)
+        
+        if downsampling_size != 0 and upsamplingsize == 0:
+            # Downsampling
+            x_train, y_train = resample(x_train, y_train, seed=seed, d_size=downsampling_size, downsample=True)
+        elif downsampling_size == 0 and upsamplingsize != 0: 
+            # Upsampling
+            x_train, y_train = resample(x_train, y_train, seed=seed, u_size=downsampling_size, oversample=True)
+        elif downsampling_size != 0 and upsamplingsize != 0: 
+            # Both
+            x_train, y_train = resample(x_train, y_train, seed=seed, d_size=downsampling_size, u_size=downsampling_size, both=True)
+    
+    # Read features to keep
+    features = json_parser.parse_json_file("./features.json")
+    x_train = clean_data(features, x_train, do_poly=False, minus_one=True, median_estimator=True, do_one_hot=True)
+    x_test = clean_data(features, x_test, do_poly=False, minus_one=True, median_estimator=True, do_one_hot=True)
+    return y_train, x_train, y_test, x_test

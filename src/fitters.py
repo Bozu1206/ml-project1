@@ -9,205 +9,201 @@ import polynomial_exp
 
 class GradientFitter:
     ## Here we supposed that data is already cleaned
-    def __init__(self, y, tx, max_iters, gamma, ratio):
-        self.y = y
-        self.tx = tx
+    def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, tresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
         self.max_iters = max_iters
         self.gamma = gamma
-        self.ratio = ratio
+        self.tresh = tresh
 
     def __train_and_validate(self):
-        # Split data
-        y_tr, x_tr, y_test, x_test = helpers.split_data_rand(
-            self.y, self.tx, self.ratio
-        )
-
         # Train a GD Linear regression predictor
-        # TODO: Ask
-        initial_w = [1] * x_tr.shape[1]
+        # Kaiming Initialisation
+        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
         w, loss = imp.mean_squared_error_gd(
-            y_tr, x_tr, initial_w, self.max_iters, self.gamma
+            self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
         )
 
         # Test error
-        test_loss = costs.compute_mse(y_test, x_test, w)
-
-        # Prediction
-        y_pred_tr = helpers.predict_labels(w, x_tr)
-        y_pred_te = helpers.predict_labels(w, x_test)
-
-        # Training accuracy
-        training_accuracy = helpers.compute_accuracy(y_tr, y_pred_tr)
-
-        # Local Test accuracy
-        local_test_acc = helpers.compute_accuracy(y_test, y_pred_te)
-
-        # Todo: add f1-score
-
-        print(
-            "Train-Validate: Training error={err}, Training accuracy={acc}".format(
-                err=loss, acc=training_accuracy
-            )
-        )
-        print(
-            "Train-Validate: Test error={err}, Test accuracy={acc}".format(
-                err=test_loss, acc=training_accuracy
-            )
-        )
-        return w, test_loss, (training_accuracy, local_test_acc)
+        train_loss = costs.compute_mse(self.y_train, self.x_train, w)
+        return w, train_loss
 
     def fit(self):
         return self.__train_and_validate()
+
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (self.tresh, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred
 
 
 class StochasticGradientFitter:
-    ## Here we supposed that data is already cleaned
-    def __init__(self, y, tx, max_iters, gamma, ratio):
-        self.y = y
-        self.tx = tx
+    # Here we suppose that data is already cleaned
+    def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, thresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
         self.max_iters = max_iters
         self.gamma = gamma
-        self.ratio = ratio
+        self.thresh = thresh
 
     def __train_and_validate(self):
-        # Split data
-        y_tr, x_tr, y_test, x_test = helpers.split_data_rand(
-            self.y, self.tx, self.ratio
-        )
-
-        # Train a GD Linear regression predictor
-        # TODO: Ask
-        initial_w = [1] * x_tr.shape[1]
+        # Train a SGD Linear regression predictor
+        # Kaiming Initialisation
+        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
         w, loss = imp.mean_squared_error_sgd(
-            y_tr, x_tr, initial_w, self.max_iters, self.gamma
+            self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
         )
 
         # Test error
-        test_loss = costs.compute_mse(y_test, x_test, w)
-
-        # Prediction
-        y_pred_tr = helpers.predict_labels(w, x_tr)
-        y_pred_te = helpers.predict_labels(w, x_test)
-
-        # Training accuracy
-        training_accuracy = helpers.compute_accuracy(y_tr, y_pred_tr)
-
-        # Local Test accuracy
-        local_test_acc = helpers.compute_accuracy(y_test, y_pred_te)
-
-        # Todo: add f1-score
-
-        print(
-            "Train-Validate: Training error={err}, Training accuracy={acc}".format(
-                err=loss, acc=training_accuracy
-            )
-        )
-        print(
-            "Train-Validate: Test error={err}, Test accuracy={acc}".format(
-                err=test_loss, acc=training_accuracy
-            )
-        )
-        return w, test_loss, (training_accuracy, local_test_acc)
+        train_loss = costs.compute_mse(self.y_train, self.x_train, w)
+        return w, train_loss
 
     def fit(self):
         return self.__train_and_validate()
+
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (0, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred
 
 
 class LeastSquareFitter:
     ## Here we supposed that data is already cleaned
-    def __init__(self, y, tx, ratio):
-        self.y = y
-        self.tx = tx
-        self.ratio = ratio
+    def __init__(self, y_train, x_train, y_test, x_test, thresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
+        self.thresh = thresh
 
     def __train_and_validate(self):
-        # Split data
-        y_tr, x_tr, y_test, x_test = helpers.split_data_rand(
-            self.y, self.tx, self.ratio
-        )
-
-        # Train a GD Linear regression predictor
-        # TODO: Ask
-        w, loss = imp.least_squares(y_tr, x_tr)
+        # Train a Least Squares predictor
+        w, _ = imp.least_squares(self.y_train, self.x_train)
 
         # Test error
-        test_loss = costs.compute_mse(y_test, x_test, w)
-
-        # Prediction
-        y_pred_tr = helpers.predict_labels(w, x_tr)
-        y_pred_te = helpers.predict_labels(w, x_test)
-
-        # Training accuracy
-        training_accuracy = helpers.compute_accuracy(y_tr, y_pred_tr)
-
-        # Local Test accuracy
-        local_test_acc = helpers.compute_accuracy(y_test, y_pred_te)
-
-        # Todo: add f1-score
-
-        print(
-            "Train-Validate: Training error={err}, Training accuracy={acc}".format(
-                err=loss, acc=training_accuracy
-            )
-        )
-        print(
-            "Train-Validate: Test error={err}, Test accuracy={acc}".format(
-                err=test_loss, acc=training_accuracy
-            )
-        )
-        return w, test_loss, (training_accuracy, local_test_acc)
+        test_loss = costs.compute_rmse(self.y_test, self.x_test, w)
+        return w, test_loss
 
     def fit(self):
         return self.__train_and_validate()
+
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (self.thresh, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred
 
 
 class RidgeRegressionFitter:
-    ## Here we supposed that data is already cleaned
-    def __init__(self, y, tx, lambda_, ratio):
-        self.y = y
-        self.tx = tx
-        self.ratio = ratio
+    def __init__(self, y_train, x_train, y_test, x_test, lambda_, thresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
         self.lambda_ = lambda_
+        self.thresh = thresh
 
     def __train_and_validate(self):
-        # Split data
-        y_tr, x_tr, y_test, x_test = helpers.split_data_rand(
-            self.y, self.tx, self.ratio
-        )
-
-        # Train a GD Linear regression predictor
-        # TODO: Ask
-        w, loss = imp.ridge_regression(y_tr, x_tr, self.lambda_)
+        # Train a Regularized Least Square predictor
+        w, _ = imp.ridge_regression(self.y_train, self.x_train, self.lambda_)
 
         # Test error
-        test_loss = costs.compute_rmse(y_test, x_test, w)
-
-        # Prediction
-        y_pred_tr = helpers.predict_labels(w, x_tr)
-        y_pred_te = helpers.predict_labels(w, x_test)
-
-        # Training accuracy
-        training_accuracy = helpers.compute_accuracy(y_tr, y_pred_tr)
-
-        # Local Test accuracy
-        local_test_acc = helpers.compute_accuracy(y_test, y_pred_te)
-
-        # Todo: add f1-score
-
-        print(
-            "Train-Validate: Training error={err}, Training accuracy={acc}".format(
-                err=loss, acc=training_accuracy
-            )
-        )
-        print(
-            "Train-Validate: Test error={err}, Test accuracy={acc}".format(
-                err=test_loss, acc=training_accuracy
-            )
-        )
-        return w, test_loss, (training_accuracy, local_test_acc)
+        test_loss = costs.compute_rmse(self.y_test, self.x_test, w)
+        return w, test_loss
 
     def fit(self):
         return self.__train_and_validate()
 
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (self.thresh, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred
 
-## TODO: Add logistic regression and reg logistic regression fitters
+
+class LogisticRegressionFitter:
+    ## Here we supposed that data is already cleaned
+    def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, thresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
+        self.max_iters = max_iters
+        self.gamma = gamma
+        self.thresh = thresh
+        
+
+    def __train_and_validate(self):
+        # Kaiming Initialisation
+        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        w, _ = imp.logistic_regression(
+            self.y_train, self.x_train, initial_w, self.max_iters, self.gamma
+        )
+
+        # Test error
+        test_loss = costs.compute_log_loss(self.y_test, self.x_test, w)
+        return w, test_loss
+
+    def fit(self):
+        return self.__train_and_validate()
+
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (self.thresh, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred
+
+
+class RegLogisticRegressionFitter:
+    ## Here we supposed that data is already cleaned
+    def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, lambda_, thresh):
+        self.y_train = y_train
+        self.y_test = y_test
+        self.x_train = x_train
+        self.x_test = x_test
+        self.max_iters = max_iters
+        self.gamma = gamma
+        self.lambda_ = lambda_
+        self.thresh = thresh
+        
+
+    def __train_and_validate(self):
+        # Kaiming Initialisation
+        initial_w = np.random.normal(0.0, 2 / self.x_train.shape[1], self.x_train.shape[1])
+        w, _ = imp.reg_logistic_regression(
+            self.y_train,
+            self.x_train,
+            self.lambda_,
+            initial_w,
+            self.max_iters,
+            self.gamma,
+        )
+        test_loss = costs.compute_log_loss(self.y_test, self.x_test, w)
+        return w, test_loss
+
+    def fit(self):
+        return self.__train_and_validate()
+
+    def predict(self, data, weights):
+        """Generate class predictions given weights, and a test data matrix."""
+        y_pred = data.dot(weights)
+        cutoff, lower, upper = (self.thresh, -1, 1)
+        y_pred[np.where(y_pred <= cutoff)] = lower
+        y_pred[np.where(y_pred > cutoff)] = upper
+        return y_pred

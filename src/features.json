@@ -1,0 +1,402 @@
+{
+    "GENHLTH" : 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "HLTHPLN1":
+    {
+        "Cleaning": ["7,9"],
+        "Type": "CAT"
+    }, 
+
+    "MEDCOST": 
+    {
+        "Cleaning": ["7,9"],
+        "Type": "CAT"
+    }, 
+
+    "_BMI5":
+    {
+        "Cleaning": [],
+        "Type": "CON, Poly"
+    },
+
+    "CHECKUP1":
+    {
+        "Cleaning": ["7,9", "8:5"],
+        "Type": "CAT"
+    },
+
+    "CVDSTRK3":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "CHCSCNCR":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "CHCOCNCR":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "CHCCOPD1":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+
+    "ADDEPEV2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "CHCKIDNY":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    }, 
+
+    "DIABETE3":
+    {
+        "Cleaning": ["7,9", "2:0, 3:0, 1:2, 4:1"],
+        "Type": "CAT"
+    },
+
+    "SEX":
+    {
+        "Cleaning": ["2:0"],
+        "Type": "CAT"
+    },
+
+    "EDUCA":
+    {
+        "Cleaning": ["9:1"],
+        "Type": "CAT"
+    },
+
+    "PHYSHLTH":
+    {
+        "Cleaning": ["77,99", "88:0"],
+        "Type": "CON, Poly"
+    }, 
+
+    "MENTHLTH":
+    {
+        "Cleaning": ["77,99", "88:0"],
+        "Type": "CON, Poly"
+    },
+
+    "INCOME2":
+    {
+        "Cleaning": ["77,99"],
+        "Type": "CON, Poly"
+    },
+
+    "USEEQUIP": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    }, 
+
+    "DIFFWALK": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+    
+
+    "_RFHYPE5":
+    {
+        "Cleaning": ["9", "1:0, 2:1"],
+        "Type": "CAT"
+    },
+
+    "_RFCHOL":
+    {
+        "Cleaning": ["9", "1:0, 2:1"],
+        "Type": "CAT"
+    },
+
+    "_ASTHMS1":
+    {
+        "Cleaning": ["9", "3:0,2:999,1:2,999:1"],
+        "Type": "CAT"
+    },
+
+
+    "_RACE":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "_AGEG5YR":
+    {
+        "Cleaning": ["14"],
+        "Type": "CON, Poly"
+    },
+
+    "_SMOKER3":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "DROCDY3_":
+    {
+        "Cleaning": ["900"],
+        "Type": "CON, Poly"
+    },
+
+    "_DRNKWEK":
+    {
+        "Cleaning": ["99900"],
+        "Type": "CON, Poly"
+    },
+
+    "_FRTLT1":
+    {
+        "Cleaning": ["9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "_VEGLT1":
+    {
+        "Cleaning": ["9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "MAXVO2_":
+    {
+        "Cleaning": ["99900"],
+        "Type": "CON, Poly"
+    },
+
+    "FC60_":
+    {
+        "Cleaning": ["99900"],
+        "Type": "CON, Poly"
+    }, 
+
+    "STRFREQ_":
+    {
+        "Cleaning": ["99900"],
+        "Type": "CON"
+    },
+
+    "DRNKANY5":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    }, 
+
+    "_RFDRHV5": 
+    {
+        "Cleaning": ["9", "1:0"],
+        "Type": "CAT"
+    },
+
+    "ACTIN11_": 
+    {
+        "Cleaning": [],
+        "Type": "CAT"
+    },
+
+    "_RFSMOK3": 
+    {
+        "Cleaning": ["9", "1:0"],
+        "Type": "CAT"
+    }, 
+
+    "SMOKE100": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "SMOKDAY2":
+    {
+        "Cleaning": ["7,9", "3:0"],
+        "Type": "CAT"
+    },
+
+    "STOPSMK2": 
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "USENOW3":
+    {
+        "Cleaning": ["7,9"],
+        "Type": "CAT"
+    },
+
+    "EXERANY2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "PREDIAB1":
+    {
+        "Cleaning": ["7,9", "2:1, 3:0"],
+        "Type": "CAT"
+    },
+
+    "CIMEMLOS":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "EMPLOY1":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "_HCVU651":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "_AGE80":
+    {
+        "Cleaning": [],
+        "Type": "CON, Poly"
+    },
+
+    "CHILDREN":
+    {
+        "Cleaning": ["88,99"],
+        "Type": "CON"
+    },
+
+    "TOLDHI2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "QLACTLM2":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "PNEUVAC3":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "VETERAN3":
+    {
+        "Cleaning": ["7,9", "2:0"],
+        "Type": "CAT"
+    },
+
+    "_LMTSCL1":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    },
+
+    "CHOLCHK":
+    {
+        "Cleaning": ["9"],
+        "Type": "CAT"
+    }, 
+
+    "_STATE": 
+    {
+        "Cleaning" : [], 
+        "Type": "CON" 
+    },
+
+    "CSTATE": 
+    {
+        "Cleaning" : ["2:0"], 
+        "Type": "CAT" 
+    },
+
+    "POORHLTH": 
+    {
+        "Cleaning" : ["77, 99", "88:0"], 
+        "Type": "CON" 
+    },
+
+    "PERSDOC2": 
+    {
+        "Cleaning" : ["7, 9", "3:0, 2:1"], 
+        "Type": "CAT" 
+    },
+
+    "BPHIGH4": 
+    {
+        "Cleaning" : ["7, 9", "3:0, 2:1, 4:2"], 
+        "Type": "CAT" 
+    },
+
+    "BPMEDS": 
+    {
+        "Cleaning" : ["7, 9", "2:0"], 
+        "Type": "CAT" 
+    },
+
+    "BLOODCHO":
+    {
+        "Cleaning" : ["7, 9", "2:0"], 
+        "Type": "CAT"
+    }, 
+
+    
+    "WEIGHT2":
+    {
+        "Cleaning" : ["7777, 9999"], 
+        "Type": "CON"
+    }, 
+
+    "HEIGHT3":
+    {
+        "Cleaning" : ["7777, 9999"], 
+        "Type": "CON"
+    }, 
+
+    "BLIND":
+    {
+        "Cleaning" : ["7,9", "2:0"], 
+        "Type": "CAT"
+    },
+
+    "DECIDE": 
+    {
+        "Cleaning" : ["7,9", "2:0"], 
+        "Type": "CAT"
+    },
+
+    "ALCDAY5":
+    {
+        "Cleaning" : ["777,999", "888:0"], 
+        "Type": "CON"
+    },
+
+    "AVEDRNK2":
+    {
+        "Cleaning" : ["77,99"], 
+        "Type": "CON"
+    }
+}
+
