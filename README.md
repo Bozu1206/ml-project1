@@ -1,7 +1,7 @@
 # ML Project 1
 
 
-- Run and make our best submissions (Ridge Regression on dataset $\mathcal{D}_\star$)
+- Run and make our best submissions (Ridge Regression on dataset $\mathcal{D}_\star$). This will generate a file named `sub.csv`.
 ```console
 $ python3 run.py
 ```
