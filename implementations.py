@@ -7,7 +7,17 @@ import numpy as np
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
-    To do : Add docstring
+    Perform linear regression using Gradient Descent (GD).
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+    initial_w (numpy.ndarray): The initial weights for the model.
+    max_iters (int): The maximum number of iterations for GD to perform.
+    gamma (float): The learning rate.
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     w = initial_w
     for n_iter in range(max_iters):
@@ -19,7 +29,17 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
 
 def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     """
-    To do : Add docstring
+    Perform linear regression using Stochastic Gradient Descent (SGD).
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+    initial_w (numpy.ndarray): The initial weights for the model.
+    max_iters (int): The maximum number of iterations for SGD to perform.
+    gamma (float): The learning rate.
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     w = initial_w
     for n_iter in range(max_iters):
@@ -32,7 +52,14 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
 
 def least_squares(y, tx):
     """
-    To do : Add docstring
+    Solve the least squares problem using normal equations.
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
@@ -50,7 +77,15 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     """
-    To do : Add docstring
+    Perform ridge regression using normal equations.
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+    lambda_ (float): The regularization parameter.
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     N, D = tx.shape
     lambda_ = 2 * N * lambda_
@@ -64,7 +99,17 @@ def ridge_regression(y, tx, lambda_):
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """
-    To do : Add docstring
+    Perform logistic regression using Gradient Descent.
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+    initial_w (numpy.ndarray): The initial weights for the model.
+    max_iters (int): The maximum number of iterations.
+    gamma (float): The learning rate.
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     w = initial_w
     for i in range(max_iters):
@@ -76,7 +121,18 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
-    To do : Add docstring
+    Perform regularized logistic regression using Gradient Descent method.
+
+    Args:
+    y (numpy.ndarray): The output values (labels).
+    tx (numpy.ndarray): The input values (features).
+    lambda_ (float): The regularization parameter.
+    initial_w (numpy.ndarray): The initial weights for the model.
+    max_iters (int): The maximum number of iterations.
+    gamma (float): The learning rate.
+
+    Returns:
+    tuple: A tuple containing the final weights and the loss.
     """
     w = initial_w
     thres = 1e-8

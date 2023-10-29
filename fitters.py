@@ -8,7 +8,6 @@ import polynomial_exp
 
 
 class GradientFitter:
-    ## Here we supposed that data is already cleaned
     def __init__(self, y_train, x_train, y_test, x_test, max_iters, gamma, tresh):
         self.y_train = y_train
         self.y_test = y_test
