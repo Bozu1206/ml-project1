@@ -149,7 +149,6 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         yield y[start_index:end_index], tx[start_index:end_index]
 
 
-# Todo : Refactor
 def build_model_data(y, x):
     """Form (y,tX) to get regression data in matrix form."""
     num_samples = len(y)

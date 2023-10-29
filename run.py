@@ -24,10 +24,12 @@ def main():
         default=False,
         help="Run all our models. If not set, just run our best model (Ridge Regression)",
     )
-    parser.add_argument("-ds", type=float, default=DOWNSAMPLING_FACTOR, help="Down-sampling factor")
+    parser.add_argument(
+        "-ds", type=float, default=DOWNSAMPLING_FACTOR, help="Down-sampling factor"
+    )
     args = parser.parse_args()
 
-    if args.ds != DOWNSAMPLING_FACTOR: 
+    if args.ds != DOWNSAMPLING_FACTOR:
         DOWNSAMPLING_FACTOR = args.ds
 
     colors.print_greet()
