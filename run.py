@@ -11,23 +11,34 @@ import argparse
 
 
 def main():
-    DATAPATH = "./data/raw/"
-    SPLIT_RATIO = 0.69
-    DOWNSAMPLING_FACTOR = 0.1651
-    SEED = 499912
-
     parser = argparse.ArgumentParser(description="Heart Prediction ML Challenge")
-    parser.add_argument("-cv", type=bool, default=False, help="Do cross-validation")
+    parser.add_argument(
+        "-cv", action="store_true", default=False, help="Do cross-validation"
+    )
     parser.add_argument(
         "--all",
-        type=bool,
+        action="store_true",
         default=False,
         help="Run all our models. If not set, just run our best model (Ridge Regression)",
     )
     parser.add_argument(
-        "-ds", type=float, default=DOWNSAMPLING_FACTOR, help="Down-sampling factor"
+        "-ds", type=float, default=0.1651, help="Down-sampling factor"
+    )
+    parser.add_argument(
+        "-dataset", type=str, default="./data/raw/", help="Path to dataset directory"
+    )
+    parser.add_argument(
+        "-split", type=float, default=0.69, help="Dataset split ratio"
+    )
+    parser.add_argument(
+        "-seed", type=int, default=499912, help="Randomness seed"
     )
     args = parser.parse_args()
+
+    DOWNSAMPLING_FACTOR = args.ds
+    DATAPATH = args.dataset
+    SPLIT_RATIO = args.split
+    SEED = args.seed
 
     if args.ds != DOWNSAMPLING_FACTOR:
         DOWNSAMPLING_FACTOR = args.ds
