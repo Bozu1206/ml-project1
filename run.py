@@ -11,31 +11,40 @@ import argparse
 
 
 def main():
-    DATAPATH = "./data/raw/"
-    SPLIT_RATIO = 0.69
-    DOWNSAMPLING_FACTOR = 0.1651
-    SEED = 499912
-
     parser = argparse.ArgumentParser(description="Heart Prediction ML Challenge")
-    parser.add_argument("-cv", type=bool, default=False, help="Do cross-validation")
+    parser.add_argument(
+        "-cv", action="store_true", default=False, help="Do cross-validation"
+    )
     parser.add_argument(
         "--all",
-        type=bool,
+        action="store_true",
         default=False,
         help="Run all our models. If not set, just run our best model (Ridge Regression)",
     )
+    parser.add_argument("-ds", type=float, default=0.1651, help="Down-sampling factor")
     parser.add_argument(
-        "-ds", type=float, default=DOWNSAMPLING_FACTOR, help="Down-sampling factor"
+        "-dataset", type=str, default="./data/raw/", help="Path to dataset directory"
     )
-    
-    parser.add_argument("--load_existing_weigts", type=bool, default=False, help="Use precomputed weigts to create y_test.csv")
-    
+    parser.add_argument("-split", type=float, default=0.69, help="Dataset split ratio")
+    parser.add_argument("-seed", type=int, default=499912, help="Randomness seed")
+
+    parser.add_argument(
+        "--load_existing_weigts",
+        type=bool,
+        default=False,
+        help="Use precomputed weigts to create y_test.csv",
+    )
+
     args = parser.parse_args()
-    
+
+    DOWNSAMPLING_FACTOR = args.ds
+    DATAPATH = args.dataset
+    SPLIT_RATIO = args.split
+    SEED = args.seed
+
     if args.ds != DOWNSAMPLING_FACTOR:
         DOWNSAMPLING_FACTOR = args.ds
-        
-    
+
     colors.print_greet()
 
     # 1. Load data
@@ -49,10 +58,12 @@ def main():
         raw_x_train, raw_y_train, SEED, SPLIT_RATIO, DOWNSAMPLING_FACTOR
     )
     colors.print_finish_loading_data(end_time - start_time)
-    
-    if args.load_existing_weigts: 
-        rrf = fitters.RidgeRegressionFitter(y_train, x_train, y_test, x_test, 10e-7, 0.151)
-        w_rrf = np.genfromtxt('RR_weigths.csv', delimiter=',')
+
+    if args.load_existing_weigts:
+        rrf = fitters.RidgeRegressionFitter(
+            y_train, x_train, y_test, x_test, 10e-7, 0.151
+        )
+        w_rrf = np.genfromtxt("RR_weigths.csv", delimiter=",")
         helpers.make_submission(rrf, w_rrf, "y_test.csv", test_ids, raw_x_test)
         colors.print_generated_submission()
         exit()
@@ -128,7 +139,7 @@ def main():
         colors.print_end_best_models()
 
     # 4. Choose best models and make submissions
-    # Save weights in csv: 
+    # Save weights in csv:
     np.savetxt("RR_weigths.csv", w_rrf, delimiter=",")
     helpers.make_submission(rrf, w_rrf, "y_test.csv", test_ids, raw_x_test)
     colors.print_generated_submission()
