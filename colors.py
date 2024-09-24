@@ -84,3 +84,7 @@ def print_end_best_models():
         + "================================================================================="
         + style.RESET
     )
+    
+def print_generated_submission():
+    print(style.BOLD + style.GREEN + "Predictions are generated! (y_test.csv)" + style.RESET)
+
